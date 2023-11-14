@@ -25,7 +25,6 @@ import { Badge } from "@/components/ui/badge";
 
 import { QuestionsSchema } from "@/lib/validations";
 import { Button } from "@/components/ui/button";
-import { create } from "domain";
 
 const type: any = "create";
 
@@ -60,12 +59,14 @@ const Question = ({ mongoUserId }: Props) => {
         content: values.explanation,
         tags: values.tags,
         author: JSON.parse(mongoUserId),
+        path: pathname,
       });
 
       // navigate to the home page
       router.push("/");
     } catch (error) {
     } finally {
+      setIsSubmitting(false);
     }
   }
 
