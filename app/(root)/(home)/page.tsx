@@ -46,29 +46,35 @@ const Home = async () => {
       <div className="mt-10 flex w-full flex-col gap-6">
         {/* Looping through questions */}
 
-        {result?.questions.length > 0 ? (
-          result?.questions.map((question) => (
-            <QuestionCard
-              key={question._id}
-              _id={question._id}
-              title={question.title}
-              tags={question.tags}
-              author={question.author}
-              upvotes={question.upvotes}
-              views={question.views}
-              answers={question.answers}
-              createdAt={question.createdAt}
-            />
-          ))
-        ) : (
-          <NoResult
-            title="There is no questions to show"
-            description="Be the first to break the silence! Ask a question and kickstart the
+        {result && result.questions ? (
+          result.questions.length > 0 ? (
+            result?.questions.map((question) => (
+              <QuestionCard
+                key={question._id}
+                _id={question._id}
+                title={question.title}
+                tags={question.tags}
+                author={question.author}
+                upvotes={question.upvotes}
+                views={question.views}
+                answers={question.answers}
+                createdAt={question.createdAt}
+              />
+            ))
+          ) : (
+            <NoResult
+              title="There is no questions to show"
+              description="Be the first to break the silence! Ask a question and kickstart the
               discussion, our query could be the next big thing others learn from. Get
               involved!"
-            link="/ask-question"
-            linkTitle="Ask a Question"
-          />
+              link="/ask-question"
+              linkTitle="Ask a Question"
+            />
+          )
+        ) : (
+          <div className="flex justify-center items-center">
+            <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>
+          </div>
         )}
       </div>
     </>
