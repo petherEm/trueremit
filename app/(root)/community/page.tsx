@@ -32,7 +32,7 @@ const CommunityPage = async () => {
       </div>
 
       <section className="mt-12 flex flex-wrap gap-4">
-        {result.users.length > 0 ? (
+        {/* {result.users.length > 0 ? (
           result.users.map((user) => (
             <UserCard key={user.name}>{user.name}</UserCard>
           ))
@@ -43,7 +43,7 @@ const CommunityPage = async () => {
               Join to be the first!
             </Link>
           </div>
-        )}
+        )} */}
       </section>
     </>
   );
