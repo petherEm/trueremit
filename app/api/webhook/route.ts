@@ -6,8 +6,13 @@ import { createUser, deleteUser, updateUser } from "@/lib/actions/user.actions";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
+  // console.log the that the webhook was called
+  console.log("Webhook called");
+
   // You can find this in the Clerk Dashboard -> Webhooks -> choose the webhook
   const WEBHOOK_SECRET = process.env.NEXT_CLERK_WEBHOOK_SECRET;
+
+  console.log("Webhook secret validated");
 
   if (!WEBHOOK_SECRET) {
     throw new Error(
@@ -52,8 +57,6 @@ export async function POST(req: Request) {
   }
 
   const eventType = evt.type;
-
-  console.log({ eventType });
 
   if (eventType === "user.created") {
     const { id, email_addresses, image_url, username, first_name, last_name } =
@@ -100,5 +103,5 @@ export async function POST(req: Request) {
     return NextResponse.json({ message: "OK", user: deletedUser });
   }
 
-  return new Response("", { status: 201 });
+  return NextResponse.json({ message: "OK" });
 }

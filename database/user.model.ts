@@ -12,27 +12,22 @@ export interface IUser extends Document {
   portfolioWebsite?: string;
   reputation?: number;
   saved: Schema.Types.ObjectId[];
-  joined: Date;
+  joinedAt: Date;
 }
 
 const UserSchema = new Schema({
   clerkId: { type: String, required: true },
   name: { type: String, required: true },
-  username: { type: String, required: true },
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-    match: /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/,
-  },
-  password: { type: String, required: true },
+  username: { type: String, required: true, unique: true },
+  email: { type: String, required: true, unique: true },
+  password: { type: String, default: null },
   bio: { type: String },
-  picture: { type: String },
+  picture: { type: String, required: true },
   location: { type: String },
   portfolioWebsite: { type: String },
   reputation: { type: Number, default: 0 },
   saved: [{ type: Schema.Types.ObjectId, ref: "Question" }],
-  joined: { type: Date, default: Date.now },
+  joinedAt: { type: Date, default: Date.now },
 });
 
 const User = models.User || model("User", UserSchema);
