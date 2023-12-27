@@ -1,13 +1,18 @@
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
 import LocalSearchbar from "@/components/shared/search/LocalSearchbar";
 import Filter from "@/components/shared/Filter";
-import { HomePageFilters, UserFilters } from "@/constants/filters";
+import { UserFilters } from "@/constants/filters";
 import UserCard from "@/components/cards/UserCard";
 import { getAllUsers } from "@/lib/actions/user.actions";
+import { SearchParamsProps } from "@/types";
+import Pagination from "@/components/shared/Pagination";
 
-const CommunityPage = async () => {
-  const result = await getAllUsers({});
+const CommunityPage = async ({ searchParams }: SearchParamsProps) => {
+  const result = await getAllUsers({
+    searchQuery: searchParams.q,
+    filter: searchParams.filter,
+    page: searchParams.page ? +searchParams.page : 1,
+  });
 
   return (
     <>
@@ -20,7 +25,7 @@ const CommunityPage = async () => {
           route="/community"
           iconPosition="left"
           imgSrc="/assets/icons/search.svg"
-          placeholder="Search for remitters"
+          placeholder="Search for amazing minds"
           otherClasses="flex-1"
         />
 
@@ -32,10 +37,8 @@ const CommunityPage = async () => {
       </div>
 
       <section className="mt-12 flex flex-wrap gap-4">
-        {/* {result.users.length > 0 ? (
-          result.users.map((user) => (
-            <UserCard key={user.name}>{user.name}</UserCard>
-          ))
+        {result.users.length > 0 ? (
+          result.users.map((user) => <UserCard key={user._id} user={user} />)
         ) : (
           <div className="paragraph-regular text-dark200_light800 mx-auto max-w-4xl text-center">
             <p>No users yet</p>
@@ -43,8 +46,14 @@ const CommunityPage = async () => {
               Join to be the first!
             </Link>
           </div>
-        )} */}
+        )}
       </section>
+      <div className="mt-10">
+        <Pagination
+          pageNumber={searchParams?.page ? +searchParams.page : 1}
+          isNext={result.isNext}
+        />
+      </div>
     </>
   );
 };

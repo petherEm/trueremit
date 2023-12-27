@@ -18,7 +18,7 @@ const Navbar = () => {
         /> */}
         <p className="h2-bold spaceGrotesk text-dark-100 dark:text-light-900 max-sm:hidden">
           Pay
-          <span className="text-indigo-600 font-bold">Looq</span>
+          <span className="text-indigo-600 font-bold">Loq</span>
         </p>
       </Link>
       <GlobalSearch />

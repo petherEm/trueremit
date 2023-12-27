@@ -7,11 +7,47 @@ import HomeFilters from "@/components/home/HomeFilters";
 
 import NoResult from "@/components/shared/NoResult";
 import QuestionCard from "@/components/cards/QuestionCard";
-import { getQuestions } from "@/lib/actions/question.action";
+import {
+  getQuestions,
+  getRecommendedQuestions,
+} from "@/lib/actions/question.action";
+import { SearchParamsProps } from "@/types";
+import Pagination from "@/components/shared/Pagination";
+import type { Metadata } from "next";
+import { auth } from "@clerk/nextjs";
 
-const Home = async () => {
-  const result = await getQuestions({});
-  console.log(result?.questions);
+export const metadata: Metadata = {
+  title: "Home | PayLoq",
+  description: "Community driven payments platform",
+};
+
+const Home = async ({ searchParams }: SearchParamsProps) => {
+  const { userId } = auth();
+
+  let result;
+
+  if (searchParams?.filter === "recommended") {
+    if (userId) {
+      result = await getRecommendedQuestions({
+        userId,
+        searchQuery: searchParams.q,
+        page: searchParams.page ? +searchParams.page : 1,
+      });
+    } else {
+      result = {
+        questions: [],
+        isNext: false,
+      };
+    }
+  } else {
+    result = await getQuestions({
+      searchQuery: searchParams.q,
+      filter: searchParams.filter,
+      page: searchParams.page ? +searchParams.page : 1,
+    });
+  }
+
+  // Fetch recommended questions (special recommendation system)
 
   return (
     <>
@@ -55,7 +91,7 @@ const Home = async () => {
                 title={question.title}
                 tags={question.tags}
                 author={question.author}
-                upvotes={question.upvotes}
+                upvotes={question.upvotes.length}
                 views={question.views}
                 answers={question.answers}
                 createdAt={question.createdAt}
@@ -76,6 +112,13 @@ const Home = async () => {
             <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>
           </div>
         )}
+      </div>
+
+      <div className="mt-10">
+        <Pagination
+          pageNumber={searchParams?.page ? +searchParams.page : 1}
+          isNext={result.isNext}
+        />
       </div>
     </>
   );
