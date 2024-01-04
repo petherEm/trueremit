@@ -71,16 +71,7 @@ const MobileNav = () => {
         className="background-light900_dark200 border-none"
       >
         <Link href="/" className="flex items-center gap-1">
-          <Image
-            src="/assets/images/site-logo.svg"
-            width={23}
-            height={23}
-            alt="PayLooq"
-          />
-          <p className="h2-bold spaceGrotesk text-dark100_light900">
-            Pay
-            <span className="text-indigo-600 font-bold">Looq</span>
-          </p>
+          <Image src="/payloq_logo.svg" width={80} height={30} alt="PayLoq" />
         </Link>
         <SheetClose asChild>
           <NavContent />
